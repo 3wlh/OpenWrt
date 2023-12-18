@@ -22,5 +22,5 @@ wget https://github.cooluc.com/https://raw.githubusercontent.com/3wking/OpenWrt/
 ```
 
 ```
-export pwd=<密码>55 && wget -qO - https://github.cooluc.com/https://raw.githubusercontent.com/3wking/OpenWrt/main/Config/Script/api_arm.sh | bash
+export pwd=<密码> && wget -qO - https://github.cooluc.com/https://raw.githubusercontent.com/3wking/OpenWrt/main/Config/Script/api_arm.sh | bash
 ```
