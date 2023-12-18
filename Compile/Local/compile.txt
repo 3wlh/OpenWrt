@@ -1,0 +1,93 @@
+PVE编译OpenWRT：
+
+开启ssh：
+sed -i 's/^#Port 22/Port 22/' /etc/ssh/sshd_config
+sed -i 's/^#PermitRootLogin/PermitRootLogin/' /etc/ssh/sshd_config
+sed -i 's/^#PasswordAuthentication/PasswordAuthentication/' /etc/ssh/sshd_config
+sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
+sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+reboot
+
+创建用户：
+useradd admin
+
+创建密码：
+passwd admin
+
+找到以下文件 /etc/sudoers 
+找到 root	ALL=(ALL:ALL) ALL
+后面加入一行，写入刚才你建立的用户名：
+admin ALL=(ALL:ALL) ALL
+命令：
+sed -i '/root\tALL=(ALL:ALL) ALL/a\admin\tALL=(ALL:ALL) ALL' /etc/sudoers
+
+进入用户：
+su admin
+
+更新系统：
+sudo apt-get update
+
+创建文件夹：
+cd /
+sudo mkdir lede
+sudo mkdir immortalwrt
+sudo chmod 777 lede
+sudo chmod 777 immortalwrt
+拉取源码
+git clone https://github.com/coolsnowwolf/lede
+git clone -b openwrt-18.06 --single-branch https://github.com/immortalwrt/immortalwrt
+git clone -b ipq50xx-qsdk-kernel-5.4-openwrt-21.02-qsdk-11.5.05.841.1029 https://github.com/hzyitc/openwrt-redmi-ax3000
+若你是想在固件里面拥有SSR PLUS或是其他VPN插件，请在SSH工具里面找到如下文件 /lede/feeds.conf.default：
+src-git kenzo https://github.com/kenzok8/openwrt-packages
+src-git small https://github.com/kenzok8/small
+
+
+第一次编译：
+cd / && cd lede
+./scripts/feeds update -a
+./scripts/feeds install -a
+make menuconfig
+make -j8 download V=s
+make -j1 V=s
+
+第二次编译：
+cd / && cd lede
+git pull
+./scripts/feeds update -a && ./scripts/feeds install -a
+make menuconfig
+make -j8 download
+make -j$(($(nproc) + 1)) V=s
+
+
+主目录：
+
+添加密码：
+目录：lede/package/base-files/files/etc目录中的shadow：
+root:$1$Ob2V/c3A$HdzeMqZZCxfbG.6X8PjL..:19036:0:99999:7:::
+更改IP：
+sed -i 's/192.168.1.1/10.10.10.254/g' lede/package/base-files/files/bin/config_generate
+更改主机名：
+sed -i 's/'OpenWrt'/'3wking'/g' lede/package/base-files/files/bin/config_generate
+更改主题：
+sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' lede/feeds/luci/collections/luci/Makefile
+修改固件默认中文：
+目录：lede/feeds/luci/modules/luci-base/root/etc/config
+option lang auto 改成 option lang zh_cn
+修改无线名称：
+目录：lede/package/kernel/mac80211/files/lib/wifi/mac80211.sh
+
+定制shell登陆后的欢迎信息：
+定制网址：http://patorjk.com/software/taag/#p=display&f=Big%20Money-nw&t=3WKING
+目录：lede/package/base-files/files/etc/banner：
+
+ $$$$$$\  $$\      $$\ $$\   $$\ $$$$$$\ $$\   $$\  $$$$$$\  
+$$ ___$$\ $$ | $\  $$ |$$ | $$  |\_$$  _|$$$\  $$ |$$  __$$\ 
+\_/   $$ |$$ |$$$\ $$ |$$ |$$  /   $$ |  $$$$\ $$ |$$ /  \__|
+  $$$$$ / $$ $$ $$\$$ |$$$$$  /    $$ |  $$ $$\$$ |$$ |$$$$\ 
+  \___$$\ $$$$  _$$$$ |$$  $$<     $$ |  $$ \$$$$ |$$ |\_$$ |
+$$\   $$ |$$$  / \$$$ |$$ |\$$\    $$ |  $$ |\$$$ |$$ |  $$ |
+\$$$$$$  |$$  /   \$$ |$$ | \$$\ $$$$$$\ $$ | \$$ |\$$$$$$  |
+ \______/ \__/     \__|\__|  \__|\______|\__|  \__| \______/ 
+-------------------------------------------------------------
+& by 3wking |$	%D %V, %C	$|    
+-------------------------------------------------------------

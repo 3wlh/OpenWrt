@@ -1,0 +1,55 @@
+OpenWRT 包管理与配置
+ 
+OPKG（OpenWRT Package）是一个轻量快速的软件包管理系统。用来管理软件包的下载、
+
+安装、升级、卸载和查询功能，并处理软件包的依赖关系。
+
+1. 工作原理
+
+当执行 opkg update 命令时， OPKG首先会读取配置文件 
+
+/etc/opkg.conf 文件， 这个文件保存了OPKG的全局配置信息。
+
+然后OPKG会根据配置地址下载软件包列表到Packages.gz gc  /var/opkg-list目录下。
+
+软件安装之后的信息会保存在目录 /usr/lib/opkg/ 下面，包含状态文件，OPKG通过访问这个
+
+状态文件确定该软件是否已经安装、安装的版本、以及依赖关系是否满足等。
+
+ 
+
+OPKG 命令执行会读取以下3部分信息
+
+配置文件  /etc/opkg.conf
+
+已安装软件包信息 /usr/lib/opkg
+
+软件仓库的软件包信息  /var/opkg-lists 
+
+ 
+
+ 
+
+2. OPKG 用法
+
+opkg update 用于更新可以安装的软件包列表
+
+opkg install tcpdump  安装软件包
+
+opkg remove tcpdump 卸载软件包
+
+opkg upgrade 升级软件包
+
+opkg list  列出所有可用软件包
+
+opkg list-installed  列出所有软件包
+
+opkg search <file> 查询软件包
+
+opkg info pkg  显示已安装软件包信息
+
+ 
+
+3. OpenWRT UCI 配置
+
+所有的配置文件都默认保存在 /etc/config 目录下
