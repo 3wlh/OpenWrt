@@ -17,24 +17,12 @@ cat /sys/class/net/eth0/address
 cat /tmp/sysinfo/model | sed 's/ /_/g'
 ```
 ## 运行
-###### arm
+###### 一键运行
 ```
-export pwd=<密码> && wget -qO - https://github.cooluc.com/https://raw.githubusercontent.com/3wking/OpenWrt/main/Config/Script/api_arm.sh | bash
-```
-###### arm64
-```
-export pwd=<密码> && wget -qO - https://github.cooluc.com/https://raw.githubusercontent.com/3wking/OpenWrt/main/Config/Script/api_arm64.sh | bash
-```
-###### x86
-```
-export pwd=<密码> && wget -qO - https://github.cooluc.com/https://raw.githubusercontent.com/3wking/OpenWrt/main/Config/Script/api_amd64.sh | bash
+export pwd=<密码> && wget -qO - https://github.cooluc.com/https://raw.githubusercontent.com/3wking/OpenWrt/main/Config/Script/api.sh | bash
 ```
 
 ###### 运行命令
 ```
 wget https://github.cooluc.com/https://raw.githubusercontent.com/3wking/OpenWrt/main/Config/api_arm64 -O api_arm64 && chmod +x api_arm64 && ./api_arm64 https://github.cooluc.com/https://raw.githubusercontent.com/3wking/OpenWrt/main/Config/config/api_serial
-```
-
-```
-export pwd=<密码> && wget -qO - https://github.cooluc.com/https://raw.githubusercontent.com/3wking/OpenWrt/main/Config/Script/api_arm.sh | bash
 ```
