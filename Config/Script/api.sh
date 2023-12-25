@@ -74,4 +74,4 @@ fi
 	if [ $? -eq 0 ]; then
 		Config
 	fi
-}
+})
