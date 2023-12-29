@@ -52,6 +52,7 @@ EOF
 #========变量========
 V2ray="/etc/config/v2ray_server"
 
+
 #========函数入口========
 (cd / && {
     [ -a $V2ray ] && V2ray && echo "V2ray配置......OK" &
