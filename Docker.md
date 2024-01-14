@@ -21,6 +21,22 @@ docker run \
   -v /SD/docker/sun-panel/database:/app/database \
   -d hslr/sun-panel
 ```
+###### DSM
+```
+docker run \
+  -it \
+  --rm \
+  --name DSM \
+  -p 4000:5000 \
+  -v /SD/docker/dsm:/storage \
+  -e DISK_SIZE=8G \
+  -e CPU_CORES=4 \
+  --device=/dev/kvm \
+  --cap-add NET_ADMIN \
+  --stop-timeout 60 \
+  vdsm/virtual-dsm:latest
+```
+CHECKSUM checksum
 
 ###### Alist
 ```sh
@@ -56,4 +72,3 @@ docker run \
   -e savePass=true \
   -d jrohy/webssh
 ```
-
