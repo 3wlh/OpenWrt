@@ -1,7 +1,7 @@
 # Friendlyelec NanoPi R6S
 #### 插件(luci-app)：
 ```
--luci-app-gpsysupgrade -luci-proto-wireguard -luci-app-upnp -luci-app-advanced -luci-app-wizard -luci-app-ttyd luci-app-ramfree luci-app-turboacc luci-app-ddns luci-app-v2ray-server luci-app-cifs-mount luci-app-unishare
+-luci-app-gpsysupgrade -luci-proto-wireguard -luci-app-upnp -luci-app-advanced -luci-app-wizard -luci-app-ttyd luci-app-webvirtcloud luci-app-ramfree luci-app-turboacc luci-app-ddns luci-app-v2ray-server luci-app-cifs-mount luci-app-unishare
 ```
 #### 初始化(Shell):
 ```
