@@ -51,11 +51,12 @@ docker run \
 ###### 阅读
 ```
 docker run \
-  --name reader \
-  --restart always \
-  -p 8082:8080 \
-  -v /SD/docker/Reader/log:/log \
+  --name=Reader \
+  --restart=always \
+  -e "SPRING_PROFILES_ACTIVE=prod" \
+  -v /SD/docker/Reader/logs:/logs \
   -v /SD/docker/Reader/storage:/storage \
+  -p 8082:8080 \
   -d hectorqin/reader
 ```
 ###### webssh
@@ -63,12 +64,26 @@ docker run \
 docker run \
   --restart always \
   --name webssh \
-  -p 5032:5032
+  -p 5032:5032 \
+  --log-driver json-file \
+  --log-opt max-file=1 \
+  --log-opt max-size=100m \
+  -e TZ=Asia/Shanghai \
+  -e savePass=false \
+  -d jrohy/webssh
+```
+```
+# 设置密码
+docker run \
+  --restart always \
+  --name webssh \
+  -p 5032:5032 \
   --net=host \
   --log-driver json-file \
   --log-opt max-file=1 \
   --log-opt max-size=100m \
   -e TZ=Asia/Shanghai \
   -e savePass=true \
+  -e authInfo=3wlh:199711 \
   -d jrohy/webssh
 ```
