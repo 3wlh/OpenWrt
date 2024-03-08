@@ -48,7 +48,7 @@ sed -i "/list ports 'eth0'/a\	list ports 'eth2'" $Network
 # 更改 WAN 口
 sed -i "s/option device 'eth2'/option device 'eth1'/g" $Network
 # 删除 UTUN 口
-utun=$((`awk "/con.*'utun'/{print NR}" $Network`))  && sed "${utun},$(($utun+2))d" $Network
+utun=$((`awk "/con.*'utun'/{print NR}" $Network`))  && sed -i "${utun},$(($utun+2))d" $Network
 # 删除 WAN6
 Net=$((`sed -n '/wan6/=' $Network`))
 if [ $(($Net)) != 0 ]; then	
