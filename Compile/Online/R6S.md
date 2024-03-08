@@ -41,7 +41,7 @@ sed -i "/list ra_flags 'other-config'/d" $DHCP
 sed -i "/option ndp 'hybrid'/d" $DHCP
 
 #========Network========
-
+sed -i "s/option device 'eth1'/option device 'eth2'/g" $Network
 # 删除 WAN6
 Net=$((`sed -n '/wan6/=' $Network`))
 if [ $(($Net)) != 0 ]; then	
@@ -54,14 +54,20 @@ fi
 # echo ledtrig-netdev > /etc/modules.d/led-for-r6s && ln -s /etc/modules.d/led-for-r6s /etc/modules-boot.d/led-for-r6s && modprobe ledtrig-netdev
 # 更改闪烁方式
 sed -i "s/option mode .*/option mode 'link'/g" $LED
-# 网口 led 循序
-# sed -i -e "s/option dev 'eth0'/option dev 'lan'/g" -e "s/option dev 'eth1'/option dev 'eth0'/g" -e "s/option dev 'lan'/option dev 'eth1'/g" $LED
+# 网口 LED 循序
+# WAN
+wan=$((`awk "/'green:wan'/{print NR}" $LED`+3))  && sed -i "${wan},${wan}s/'eth.*'/'eth2'/g" $LED 
+# LAN1
+lan1=$((`awk "/'green:lan-1'/{print NR}" $LED`+3))  &&  sed -i "${lan1},${lan1}s/'eth.*'/'eth1'/g" $LED
+# LAN2
+lan2=$((`awk "/'green:lan-2'/{print NR}" $LED`+3))  && sed -i "${lan2},${lan2}s/'eth.*'/'eth0'/g" $LED
 # 关闭系统 led
 if ! grep -q "option name 'SYS_LED'" $LED; then
 cat >>$LED<<EOF
 
 config led
-	option sysfs 'red:sys'
+	# red:power & red:sys
+	option sysfs 'red:power'
 	option trigger 'none'
 	option name 'SYS_LED'
 	option default '0'
