@@ -11,7 +11,7 @@
 ARGON="/etc/config/argon"
 DHCP="/etc/config/dhcp"
 Network="/etc/config/network"
-LED="/etc/config/system"
+System="/etc/config/system"
 
 #========ARGON========
 
@@ -62,27 +62,28 @@ if [ $(($Net)) != 0 ]; then
 	sed -i "/dhcpv6/d" $Network	
 fi	
 
-#========LED========
+#========System========
 # echo ledtrig-netdev > /etc/modules.d/led-for-r6s && ln -s /etc/modules.d/led-for-r6s /etc/modules-boot.d/led-for-r6s && modprobe ledtrig-netdev
 # 网口 LED 循序
 # WAN
-wan=$((`awk "/'green:wan'/{print NR}" $LED`+3))  && sed -i "${wan},${wan}s/'eth.*'/'eth1'/g" $LED 
+wan=$((`awk "/'green:wan'/{print NR}" $System`+3))  && sed -i "${wan},${wan}s/'eth.*'/'eth1'/g" $System 
 # LAN1
-lan1=$((`awk "/'green:lan-1'/{print NR}" $LED`+3))  &&  sed -i "${lan1},${lan1}s/'eth.*'/'eth2'/g" $LED
+lan1=$((`awk "/'green:lan-1'/{print NR}" $System`+3))  &&  sed -i "${lan1},${lan1}s/'eth.*'/'eth2'/g" $System
 # LAN2
-lan2=$((`awk "/'green:lan-2'/{print NR}" $LED`+3))  && sed -i "${lan2},${lan2}s/'eth.*'/'eth0'/g" $LED
+lan2=$((`awk "/'green:lan-2'/{print NR}" $System`+3))  && sed -i "${lan2},${lan2}s/'eth.*'/'eth0'/g" $System
 # 更改网口闪烁方式
-sed -i "s/option mode .*/option mode 'link'/g" $LED
+sed -i "s/option mode .*/option mode 'link'/g" $System
 # 关闭系统 led
-if ! grep -q "option name 'SYS_LED'" $LED; then
-cat >>$LED<<EOF
+if ! grep -q "option name 'SYS_LED'" $System; then
+cat >>$System<<EOF
 
 config led
 	# red:power & red:sys
+	option name 'SYS_LED'
 	option sysfs 'red:power'
 	option trigger 'none'
-	option name 'SYS_LED'
 	option default '0'
+	
 EOF
 fi
 ```
