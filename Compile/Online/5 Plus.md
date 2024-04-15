@@ -22,9 +22,9 @@ sed -i "/option ip6assign '60'/a\	option gateway '10.10.10.254'" $Network
 sed -i "/option gateway '10.10.10.254'/a\	list dns '10.10.10.254'" $Network
 # 以下是旁路由模式
 # 删除 WAN 口
-WAN=$((`awk "/con.*'wan'/{print NR}" $Network`))  && sed "${WAN},$(($WAN+3))d" $Network
+WAN=$((`awk "/con.*'wan'/{print NR}" $Network`))  && sed -i "${WAN},$(($WAN+3))d" $Network
 # 删除 WAN6 口
-WAN6=$((`awk "/con.*'wan6'/{print NR}" $Network`))  && sed "${WAN6},$(($WAN6+3))d" $Network
+WAN6=$((`awk "/con.*'wan6'/{print NR}" $Network`))  && sed -i "${WAN6},$(($WAN6+3))d" $Network
 添加 eth1 到LAN 口
 sed -i "/list ports 'eth.*'/a\	list ports 'eth1'" $Network
 
