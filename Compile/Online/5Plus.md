@@ -1,7 +1,7 @@
-# 斐讯N1
+# Orange Pi 5 Plus
 #### 插件(luci-app)：
 ```
--luci-app-gpsysupgrade -luci-app-upnp -luci-app-advancedplus -luci-app-wizard luci-app-hd-idle luci-app-unishare luci-app-filebrowser luci-app-sunpanel luci-app-alist luci-app-store
+-luci-app-gpsysupgrade -luci-app-upnp -luci-app-advancedplus -luci-app-wizard luci-app-ttyd luci-app-hd-idle luci-app-unishare luci-app-filebrowser-go luci-app-sunpanel luci-app-alist luci-app-store
 ```
 #### 初始化(Shell):
 ```
@@ -11,22 +11,6 @@
 ARGON="/etc/config/argon"
 DHCP="/etc/config/dhcp"
 Network="/etc/config/network"
-
-#========ARGON========
-cat >$ARGON<<EOF
-
-config global
-	option online_wallpaper 'bing'
-	option mode 'normal'
-	option bing_background '0'
-	option transparency_dark '0.3'
-	option dark_primary '#483d8b'
-	option primary '#5e72e4'
-	option blur_dark '2'
-	option transparency '0.3'
-	option blur '2'
-	option save '保存更改'
-EOF
 
 #========Network========
 # 禁用 DHCP 分配
@@ -48,4 +32,7 @@ sed -i "/option ndp 'hybrid'/d" $DHCP
 sed -i "/option force '1'/d" $DHCP
 # 不提供DHCP服务
 sed -i "/option dhcpv4 'server'/a\	option ignore '1'" $DHCP
+```
+
+
 ```
