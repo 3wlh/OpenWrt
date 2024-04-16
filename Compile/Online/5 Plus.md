@@ -41,9 +41,6 @@ WAN6=$((`awk "/con.*'wan6'/{print NR}" $Network`))  && sed -i "${WAN6},$(($WAN6+
 添加 eth1 到LAN 口
 sed -i "/list ports 'eth.*'/a\	list ports 'eth1'" $Network
 
-
-
-	
 #========DHCP========
 # 禁用 ipv6_DHCP
 sed -i "/config dhcp 'lan'/a\	option dynamicdhcp '0'" $DHCP
