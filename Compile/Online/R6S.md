@@ -8,10 +8,18 @@
 #!/bin/bash
 
 #========变量========
+Fstab="/etc/config/fstab"
 ARGON="/etc/config/argon"
 DHCP="/etc/config/dhcp"
 Network="/etc/config/network"
 System="/etc/config/system"
+
+#========Fstab========
+# 更改挂挂载选项
+sed -i "s|option anon_swap .*|option anon_swap '0'|g" $Fstab
+sed -i "s|option anon_mount .*|option anon_mount '0'|g" $Fstab
+sed -i "s|option auto_swap .*|option auto_swap '0'|g" $Fstab
+sed -i "s|option auto_mount .*|option auto_mount '1'|g" $Fstab
 
 #========ARGON========
 
