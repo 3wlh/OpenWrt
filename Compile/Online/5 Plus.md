@@ -3,6 +3,11 @@
 ```
 -luci-app-gpsysupgrade -luci-app-upnp -luci-app-advancedplus -luci-app-wizard luci-app-ramfree luci-app-ttyd luci-app-hd-idle luci-app-unishare luci-app-filebrowser-go luci-app-sunpanel luci-app-alist luci-app-store
 ```
+#### USB(luci-app)：
+```
+libpci pciids pciutils usbutils libusb-1.0-0 usbmuxd libusbmuxd kmod-scsi-core kmod-usb-core kmod-usb-storage kmod-usb-storage-extras kmod-usb-storage-uas
+```
+
 #### 初始化(Shell):
 ```
 #!/bin/bash
