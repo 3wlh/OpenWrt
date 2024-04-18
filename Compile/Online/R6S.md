@@ -110,6 +110,5 @@ config sunpanel
 	option enabled '1'
 	option port '88'
 	option config_path '/mnt/EMMC/Config/SunPanel'
-	mnt/EMMC/Config/SunPanel/uploads/2024/4/18/8a876c3151f8e1cb3c78f45eeedd8c10.jpg
 EOF
 ```
