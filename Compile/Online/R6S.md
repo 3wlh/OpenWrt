@@ -1,7 +1,7 @@
 # NanoPi R6S
 #### 插件(luci-app)：
 ```
--luci-app-gpsysupgrade -luci-proto-wireguard -luci-app-upnp -luci-app-advancedplus -luci-app-wizard -luci-app-ttyd luci-app-ramfree luci-app-turboacc luci-app-ddns luci-app-v2ray-server luci-app-cifs-mount luci-app-unishare
+-luci-app-gpsysupgrade -luci-proto-wireguard -luci-app-upnp -luci-app-advancedplus -luci-app-wizard -luci-app-ttyd luci-app-ramfree luci-app-turboacc luci-app-ddns luci-app-v2ray-server
 ```
 #### 初始化(Shell):
 ```
@@ -64,12 +64,7 @@ sed -i "s/option device 'eth2'/option device 'eth1'/g" $Network
 # 删除 UTUN 口
 utun=$((`awk "/con.*'utun'/{print NR}" $Network`))  && sed -i "${utun},$(($utun+3))d" $Network
 # 删除 WAN6 口
-Net=$((`sed -n '/wan6/=' $Network`))
-if [ $(($Net)) != 0 ]; then	
-	sed -i -e "$(($Net))d" $Network -e "$(($Net+1))d" $Network
-	sed -i "/dhcpv6/d" $Network	
-fi
-
+WAN6=$((`awk "/con.*'wan6'/{print NR}" $Network`))  && sed -i "${WAN6},$(($WAN6+3))d" $Network
 
 #========System========
 # echo ledtrig-netdev > /etc/modules.d/led-for-r6s && ln -s /etc/modules.d/led-for-r6s /etc/modules-boot.d/led-for-r6s && modprobe ledtrig-netdev
