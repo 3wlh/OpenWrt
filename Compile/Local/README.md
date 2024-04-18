@@ -43,24 +43,32 @@ git clone https://github.com/coolsnowwolf/lede.git /Compile
 ```
 git clone https://github.com/openwrt/openwrt.git /Compile
 ```
+###### orangepi-xunlong源码
+```
+git clone https://ghproxy.net/https://github.com/orangepi-xunlong/openwrt.git -b openwrt-22.03 /Compile
+```
 #### 更改feeds.conf.default
-###### LEDE
+###### OpenWrt 更换Github源
 ```
-# 加速地址
-export Proxy=1094890624
-echo ``
-git clone https://github.com/coolsnowwolf/lede.git /Compile
+echo "src-git packages https://github.com/openwrt/packages.git" > feeds.conf.default
+echo "src-git luci https://github.com/openwrt/luci.git" >> feeds.conf.default
+echo "src-git routing https://github.com/openwrt/routing.git" >> feeds.conf.default
+echo "src-git telephony https://github.com/openwrt/telephony.git" >> feeds.conf.default
+# 添加自定义仓库
+echo "src-git kiddin9 https://github.com/kiddin9/openwrt-packages.git" >> feeds.conf.default
 ```
-###### OpenWrt
+###### OpenWrt 加速地址
 ```
-git clone https://github.com/coolsnowwolf/lede.git /Compile
+sed -i "s|https://github.com|https://ghproxy.net/https://github.com|" feeds.conf.default
 ```
-
-
+###### 添加仓库
+```
+echo "src-git-full kiddin9 https://github.com/kiddin9/openwrt-packages.git" >> feeds.conf.default
+```
 #### GitHub加速
 ###### URL替换
 ```
-git config --global url."https://github.com/".insteadOf "https://ghproxy.com/https://github.com/"
+git config --global url."https://github.com/".insteadOf "https://ghproxy.net/https://github.com"
 ```
 ###### 修改~/.gitconfig文件
 ```
@@ -69,6 +77,10 @@ git config --global url."https://github.com/".insteadOf "https://ghproxy.com/htt
 ```
 
 ## 编译：
+#### 进入目录
+```
+cd /Compile
+```
 #### 更新源码
 ```
 git pull
