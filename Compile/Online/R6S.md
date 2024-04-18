@@ -1,7 +1,7 @@
 # NanoPi R6S
 #### 插件(luci-app)：
 ```
--luci-app-gpsysupgrade -luci-proto-wireguard -luci-app-upnp -luci-app-advancedplus -luci-app-wizard -luci-app-ttyd luci-app-ramfree luci-app-turboacc luci-app-ddns luci-app-v2ray-server
+-luci-app-gpsysupgrade -luci-proto-wireguard -luci-app-upnp -luci-app-advancedplus -luci-app-wizard -luci-app-ttyd luci-app-ramfree luci-app-turboacc luci-app-ddns luci-app-v2ray-server luci-app-sunpanel
 ```
 #### 初始化(Shell):
 ```
@@ -13,6 +13,7 @@ ARGON="/etc/config/argon"
 DHCP="/etc/config/dhcp"
 Network="/etc/config/network"
 System="/etc/config/system"
+Sunpanel="/etc/config/sunpanel"
 
 #========Fstab========
 # 更改挂挂载选项
@@ -21,6 +22,17 @@ sed -i "s|option anon_mount .*|option anon_mount '0'|g" $Fstab
 sed -i "s|option auto_swap .*|option auto_swap '0'|g" $Fstab
 sed -i "s|option auto_mount .*|option auto_mount '1'|g" $Fstab
 
+# 添加挂载
+if ! grep -q "bca936d6-56dc-44b7-b0d0-2d30f83091dc" $Fstab; then
+cat >>$Fstab<<EOF
+
+config mount
+	option target '/mnt/EMMC'
+	option uuid 'bca936d6-56dc-44b7-b0d0-2d30f83091dc'
+	option enabled '1'
+	
+EOF
+fi
 #========ARGON========
 
 cat >$ARGON<<EOF
@@ -90,4 +102,13 @@ config led
 	
 EOF
 fi
+#========Sunpanel========
+# 设置导航页
+cat >$Sunpanel<<EOF
+
+config sunpanel
+	option enabled '1'
+	option port '88'
+	option config_path '/mnt/EMMC/Config/SunPanel'
+EOF
 ```
