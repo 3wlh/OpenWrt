@@ -1,7 +1,7 @@
 # Orange Pi 5 Plus
 #### 插件(luci-app)：
 ```
--luci-app-gpsysupgrade -luci-app-upnp -luci-app-advancedplus -luci-app-wizard luci-app-ramfree luci-app-ttyd luci-app-hd-idle luci-app-unishare luci-app-filebrowser-go luci-app-sunpanel luci-app-alist luci-app-store
+-luci-app-gpsysupgrade -luci-app-upnp -luci-app-advancedplus -luci-app-wizard luci-app-ramfree luci-app-ttyd luci-app-hd-idle luci-app-unishare luci-app-filebrowser-go luci-app-store
 ```
 #### USB(luci-app)：
 ```
