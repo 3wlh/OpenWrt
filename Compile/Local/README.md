@@ -115,6 +115,12 @@ make package/<IPK名>/compile V=99
 ```
 #### 清理编译
 ```
+sudo make clean -j$(($(nproc) + 1)) V=s
+sudo make dirclean -j$(($(nproc) + 1)) V=s
+sudo make distclean -j$(($(nproc) + 1)) V=s
+```
+#### 清理编译
+```
 make package/luci-theme-rosy/luci-theme-rosy clean
 ```
 
