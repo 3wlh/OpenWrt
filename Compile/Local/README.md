@@ -66,9 +66,21 @@ sed -i "s|https://github.com|https://ghproxy.net/https://github.com|" feeds.conf
 echo "src-git-full kiddin9 https://github.com/kiddin9/openwrt-packages.git" >> feeds.conf.default
 ```
 #### GitHub加速
+###### 查看已有配置
+```
+sudo git config --global --list
+```
+###### 删除全局配置项
+```
+git config --global --unset url.<base>.insteadOf
+sudo git config --global --unset url.https://ghproxy.net/https://github.com.insteadof
+```
 ###### URL替换
 ```
 git config --global url."https://github.com/".insteadOf "https://ghproxy.net/https://github.com"
+
+sudo git config --global url."https://ghproxy.net/https://github.com".insteadOf "https://github.com" 
+
 ```
 ###### 修改~/.gitconfig文件
 ```
