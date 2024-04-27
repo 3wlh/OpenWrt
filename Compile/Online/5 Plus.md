@@ -5,7 +5,7 @@
 ```
 #### USB(luci-app)：
 ```
-libpci pciids pciutils usbutils libusb-1.0-0 usbmuxd libusbmuxd kmod-scsi-core kmod-usb-core kmod-usb-storage kmod-usb-storage-extras kmod-usb-storage-uas
+libpci pciids pciutils usbutils libusb-1.0-0 usbmuxd libusbmuxd kmod-scsi-core kmod-usb-core kmod-usb-storage kmod-usb-storage-extras kmod-usb-storage-uas kmod-usb3
 ```
 
 #### 初始化(Shell):
