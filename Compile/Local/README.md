@@ -45,7 +45,7 @@ git clone https://github.com/openwrt/openwrt.git /Compile
 ```
 ###### orangepi-xunlong源码
 ```
-git clone https://ghproxy.net/https://github.com/orangepi-xunlong/openwrt.git -b openwrt-22.03 /Compile
+git clone https://github.com/orangepi-xunlong/openwrt.git -b openwrt-22.03 /Compile
 ```
 #### 更改feeds.conf.default
 ###### OpenWrt 更换Github源
@@ -100,6 +100,13 @@ git pull
 #### 更新插件
 ```
 ./scripts/feeds update -a && ./scripts/feeds install -a
+```
+#### 下载dll库:
+```sh
+make download -j$(nproc)
+```
+```sh
+make download -j$(nproc) V=s  #显示信息
 ```
 #### 编译选项
 ```
