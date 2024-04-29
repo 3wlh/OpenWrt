@@ -11,14 +11,12 @@ docker run \
 
 ###### sun-panel导航
 ```
-mkdir /SD/docker/sun-panel/conf /SD/docker/sun-panel/uploads /SD/docker/sun-panel/database && 
+mkdir -p /mnt/SD/Configs/SunPanel/conf && 
 docker run \
   --name sun-panel \
   --restart=always \
   -p 3002:3002 \
-  -v /SD/docker/sun-panel/conf:/app/conf \
-  -v /SD/docker/sun-panel/uploads:/app/uploads \
-  -v /SD/docker/sun-panel/database:/app/database \
+  -v /mnt/SD/Configs/SunPanel/conf:/app/conf \
   -d hslr/sun-panel
 ```
 ###### DSM
