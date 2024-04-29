@@ -105,6 +105,10 @@ git pull
 ```
 make menuconfig
 ```
+#### 配置生效
+```
+ make defconfig
+```
 #### 开始编译
 ```
 make -j$(($(nproc) + 1)) V=s
