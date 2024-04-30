@@ -101,13 +101,7 @@ git pull
 ```
 ./scripts/feeds update -a && ./scripts/feeds install -a
 ```
-#### 下载dll库:
-```sh
-make download -j$(nproc)
-```
-```sh
-make download -j$(nproc) V=s  #显示信息
-```
+
 #### 编译选项
 ```
 make menuconfig
@@ -116,7 +110,17 @@ make menuconfig
 ```
  make defconfig
 ```
+#### 下载dll库:
+```sh
+make download -j$(nproc)
+```
+```sh
+make download -j$(nproc) V=s  #显示信息
+```
 #### 开始编译
+```
+make -j$(nproc) V=s
+```
 ```
 make -j$(($(nproc) + 1)) V=s
 ```
