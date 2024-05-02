@@ -1,7 +1,7 @@
 # NanoPi R6S
 #### 插件(luci-app)：
 ```
--luci-app-gpsysupgrade -luci-proto-wireguard -luci-app-upnp -luci-app-advancedplus -luci-app-wizard -luci-app-ttyd luci-app-ramfree luci-app-turboacc luci-app-ddns luci-app-v2ray-server luci-app-sunpanel luci-app-alist
+-luci-app-gpsysupgrade -luci-proto-wireguard -luci-app-upnp -luci-app-advancedplus -luci-app-wizard luci-app-ttyd luci-app-ramfree luci-app-turboacc luci-app-ddns luci-app-v2ray-server luci-app-eqosplus luci-app-hd-idle luci-app-unishare luci-app-filebrowser-go  luci-app-sunpanel luci-app-alist
 ```
 #### 初始化(Shell):
 ```
