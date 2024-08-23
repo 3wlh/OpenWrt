@@ -22,19 +22,6 @@ sed -i "s|option anon_mount .*|option anon_mount '0'|g" $Fstab
 sed -i "s|option auto_swap .*|option auto_swap '0'|g" $Fstab
 sed -i "s|option auto_mount .*|option auto_mount '1'|g" $Fstab
 
-# 添加挂载
-if ! grep -q "bca936d6-56dc-44b7-b0d0-2d30f83091dc" $Fstab; then
-cat >>$Fstab<<EOF
-
-config mount
-	option target '/mnt/EMMC'
-	option uuid 'bca936d6-56dc-44b7-b0d0-2d30f83091dc'
-	option enabled '1'
-	
-EOF
-else
-EMMC=$((`awk "/'bca936d6-56dc-44b7-b0d0-2d30f83091dc'/{print NR}" $Fstab`))  && sed -i -e "$(($EMMC-1)),$(($EMMC-1))s|'.*'|'/mnt/EMMC'|g" -e "$(($EMMC+1)),$(($EMMC+1))s|'.*'|'1'|g" $Fstab
-fi
 #========ARGON========
 
 cat >$ARGON<<EOF
@@ -110,6 +97,6 @@ cat >$Sunpanel<<EOF
 config sunpanel
 	option enabled '1'
 	option port '88'
-	option config_path '/mnt/EMMC/Config/SunPanel'
+	option config_path '/mnt/SD/Config/SunPanel'
 EOF
 ```
