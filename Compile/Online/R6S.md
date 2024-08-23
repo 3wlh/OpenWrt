@@ -57,7 +57,7 @@ fi
 #========Network========
 # 更改 eth1 为 WAN 口
 sed -i "/list ports 'eth1'/d" $Network
-sed -i "s/option device 'eth2'/option device 'eth1'/g" $Network
+sed -i "s/option device 'eth*'/option device 'eth1'/g" $Network
 # 添加 eth2 LAN 口
 sed -i "/list ports 'eth0'/a\	list ports 'eth2'" $Network
 # 删除 UTUN 口
