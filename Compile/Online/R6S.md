@@ -61,7 +61,7 @@ sed -i "s/option device 'eth*'/option device 'eth1'/g" $Network
 # 添加 eth2 LAN 口
 sed -i "/list ports 'eth0'/a\	list ports 'eth2'" $Network
 # 删除 UTUN 口
-utun=$((`awk "/con.*'utun'/{print NR}" $Network`))  && sed -i "${utun},$(($utun+3))d" $Network
+UTUN=$((`awk "/con.*'utun'/{print NR}" $Network`))  && sed -i "${UTUN},$(($UTUN+3))d" $Network
 # 删除 WAN6 口
 WAN6=$((`awk "/con.*'wan6'/{print NR}" $Network`))  && sed -i "${WAN6},$(($WAN6+3))d" $Network
 
@@ -71,9 +71,9 @@ WAN6=$((`awk "/con.*'wan6'/{print NR}" $Network`))  && sed -i "${WAN6},$(($WAN6+
 # WAN
 wan=$((`awk "/'green:wan'/{print NR}" $System`+3))  && sed -i "${wan},${wan}s/'eth.*'/'pppoe-wan'/g" $System 
 # LAN1
-lan1=$((`awk "/'green:lan-1'/{print NR}" $System`+3))  &&  sed -i "${lan1},${lan1}s/'eth.*'/'eth2'/g" $System
+LAN1=$((`awk "/'green:lan-1'/{print NR}" $System`+3))  &&  sed -i "${LAN1},${LAN1}s/'eth.*'/'eth2'/g" $System
 # LAN2
-lan2=$((`awk "/'green:lan-2'/{print NR}" $System`+3))  && sed -i "${lan2},${lan2}s/'eth.*'/'eth0'/g" $System
+LAN2=$((`awk "/'green:lan-2'/{print NR}" $System`+3))  && sed -i "${LAN2},${LAN2}s/'eth.*'/'eth0'/g" $System
 # 更改网口闪烁方式
 sed -i "s/option mode .*/option mode 'link'/g" $System
 # 关闭系统 led
