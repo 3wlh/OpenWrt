@@ -60,10 +60,9 @@ cat >>$System<<EOF
 
 config led
 	option name 'Blue'
-	option sysfs 'blue:indicator-1'
+	option sysfs 'blue_led'
 	option trigger 'none'
 	option default '0'
-	
 EOF
 fi
 if ! grep -q "ooption name 'Green'" $System; then
@@ -71,10 +70,9 @@ cat >>$System<<EOF
 
 config led
 	option name 'Green'
-	option sysfs 'green:indicator-2'
+	option sysfs 'green_led'
 	option trigger 'none'
 	option default '0'
-
 EOF
 fi
 ```
