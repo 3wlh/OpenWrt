@@ -1,7 +1,7 @@
 # Orange Pi 5 Plus
 #### 插件(luci-app)：
 ```
--luci-app-upnp -luci-app-advancedplus -luci-app-wizard -luci-app-amlogic -luci-app-partexp -luci-app-fileassistant luci-app-ramfree luci-app-turboacc luci-app-ddns luci-app-v2ray-server luci-app-vssr luci-app-eqosplus luci-app-unishare luci-app-filebrowser-go luci-app-sunpanel luci-app-alist
+-luci-app-upnp -luci-app-advancedplus -luci-app-wizard -luci-app-amlogic -luci-app-partexp -luci-app-autoreboot -luci-app-fileassistant luci-app-ramfree luci-app-turboacc luci-app-ddns luci-app-v2ray-server luci-app-vssr luci-app-eqosplus luci-app-unishare luci-app-filebrowser-go luci-app-sunpanel luci-app-alist
 ```
 #### USB(luci-app)：
 ```
