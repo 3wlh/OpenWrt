@@ -1,7 +1,7 @@
 # Orange Pi 5 Plus
 #### 插件(luci-app)：
 ```
--luci-app-upnp -luci-app-advancedplus -luci-app-wizard -luci-app-amlogic luci-app-ramfree luci-app-turboacc luci-app-ddns luci-app-v2ray-server luci-app-vssr luci-app-eqosplus luci-app-unishare luci-app-filebrowser-go luci-app-sunpanel luci-app-alist
+-luci-app-upnp -luci-app-advancedplus -luci-app-wizard -luci-app-amlogic -luci-app-partexp -luci-app-fileassistant luci-app-ramfree luci-app-turboacc luci-app-ddns luci-app-v2ray-server luci-app-vssr luci-app-eqosplus luci-app-unishare luci-app-filebrowser-go luci-app-sunpanel luci-app-alist
 ```
 #### USB(luci-app)：
 ```
@@ -28,18 +28,22 @@ sed -i "s|option auto_mount .*|option auto_mount '1'|g" $Fstab
 
 #========Network========
 # 禁用 DHCP 分配
-sed -i "/option dhcpv4 'server'/a\	option ignore '1'" $Network
-sed -i "/option ignore '1'/a\	option dynamicdhcp '0'" $Network
+# sed -i "/option dhcpv4 'server'/a\	option ignore '1'" $Network
+# sed -i "/option ignore '1'/a\	option dynamicdhcp '0'" $Network
 # 添加 网关 和 DNS
-sed -i "/option ip6assign '60'/a\	option gateway '10.10.10.254'" $Network
-sed -i "/option gateway '10.10.10.254'/a\	list dns '10.10.10.254'" $Network
+# sed -i "/option ip6assign '60'/a\	option gateway '10.10.10.254'" $Network
+# sed -i "/option gateway '10.10.10.254'/a\	list dns '10.10.10.254'" $Network
 # 以下是旁路由模式
+# 添加 eth1 到LAN 口
+# sed -i "/list ports 'eth.*'/a\	list ports 'eth1'" $Network
 # 删除 WAN 口
-WAN=$((`awk "/con.*'wan'/{print NR}" $Network`))  && sed -i "${WAN},$(($WAN+3))d" $Network
+# WAN=$((`awk "/con.*'wan'/{print NR}" $Network`))  && sed -i "${WAN},$(($WAN+3))d" $Network
+
+# 删除 UTUN 口
+UTUN=$((`awk "/con.*'utun'/{print NR}" $Network`))  && sed -i "${UTUN},$(($UTUN+3))d" $Network
 # 删除 WAN6 口
 WAN6=$((`awk "/con.*'wan6'/{print NR}" $Network`))  && sed -i "${WAN6},$(($WAN6+3))d" $Network
-添加 eth1 到LAN 口
-sed -i "/list ports 'eth.*'/a\	list ports 'eth1'" $Network
+
 
 #========DHCP========
 # 禁用 ipv6_DHCP
