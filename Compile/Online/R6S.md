@@ -15,8 +15,14 @@ uci set fstab.@global[].anon_mount="0"
 uci set fstab.@global[].auto_swap="0"
 # 自动挂载磁盘
 uci set fstab.@global[].auto_mount="1"
+uci commit fstab
 
 #========ARGON========
+if [ ! -n "$(uci -q get argon.@global[])" ]; then
+	echo "" > "/etc/config/argon"
+	uci add argon global
+	uci commit argon
+fi
 uci set argon.@global[].online_wallpaper="none"
 uci set argon.@global[].mode="normal"
 uci set argon.@global[].bing_background="0"
@@ -26,6 +32,8 @@ uci set argon.@global[].primary="#e16496"
 uci set argon.@global[].blur_dark="1"
 uci set argon.@global[].transparency="0.2"
 uci set argon.@global[].blur="1"
+uci commit argon
+
 
 #========DHCP========
 # 禁用 ipv6 DHCP
@@ -37,6 +45,7 @@ uci -q delete dhcp.lan.ra
 uci -q delete dhcp.lan.ndp
 # 禁用 ipv6 解析
 uci set dhcp.@dnsmasq[].filter_aaaa="1"
+uci commit dhcp
 
 #========Network========
 # 更改 eth1 为 WAN 口
@@ -47,6 +56,7 @@ uci set network.wan.device="eth1"
 uci delete network.wan6
 # 设置拨号协议
 uci set network.wan.proto="pppoe"
+uci commit network
 
 #========System========
 # echo ledtrig-netdev > /etc/modules.d/led-for-r6s && ln -s /etc/modules.d/led-for-r6s /etc/modules-boot.d/led-for-r6s && modprobe ledtrig-netdev
@@ -64,10 +74,10 @@ uci set system.led_lan2.mode="link"
 # 关闭系统 led [red:power & red:sys]
 uci set system.led_sys="led"
 uci set system.led_sys.name="SYS_LED"
-uci set system.led_sys.sysfs="red:power"
+uci set system.led_sys.sysfs="red:heartbeat"
 uci set system.led_sys.trigger="none"
 uci set system.led_sys.default="0"
 # 更改名称
-uci set system.@system[].hostname='R6S'
-
+# uci set system.@system[].hostname='R6S'
+uci commit system
 ```
