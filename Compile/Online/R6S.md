@@ -6,86 +6,68 @@
 #### 初始化(Shell):
 ```
 #!/bin/bash
-
-#========变量========
-Fstab="/etc/config/fstab"
-ARGON="/etc/config/argon"
-DHCP="/etc/config/dhcp"
-Network="/etc/config/network"
-System="/etc/config/system"
-
 #========Fstab========
-# 更改挂挂载选项
-sed -i "s|option anon_swap .*|option anon_swap '0'|g" $Fstab
-sed -i "s|option anon_mount .*|option anon_mount '0'|g" $Fstab
-sed -i "s|option auto_swap .*|option auto_swap '0'|g" $Fstab
-sed -i "s|option auto_mount .*|option auto_mount '1'|g" $Fstab
+# 自动挂载未配置的Swap
+uci set fstab.@global[].anon_swap="0"
+# 自动挂载未配置的磁盘
+uci set fstab.@global[].anon_mount="0"
+# 自动挂载交换分区
+uci set fstab.@global[].auto_swap="0"
+# 自动挂载磁盘
+uci set fstab.@global[].auto_mount="1"
 
 #========ARGON========
-
-cat >$ARGON<<EOF
-
-config global
-	option online_wallpaper 'none'
-	option mode 'normal'
-	option bing_background '0'
-	option transparency_dark '0.2'
-	option dark_primary '#e16496'
-	option primary '#e16496'
-	option blur_dark '1'
-	option transparency '0.2'
-	option blur '1'
-	option save '保存更改'
-EOF
+uci set argon.@global[].online_wallpaper="none"
+uci set argon.@global[].mode="normal"
+uci set argon.@global[].bing_background="0"
+uci set argon.@global[].transparency_dark="0.2"
+uci set argon.@global[].dark_primary="#e16496"
+uci set argon.@global[].primary="#e16496"
+uci set argon.@global[].blur_dark="1"
+uci set argon.@global[].transparency="0.2"
+uci set argon.@global[].blur="1"
 
 #========DHCP========
-
 # 禁用 ipv6 DHCP
-sed -i "/option dhcpv6 'hybrid'/d" $DHCP
-sed -i "/option ra 'hybrid'/d" $DHCP
-sed -i "/option ra_slaac '1'/d" $DHCP
-sed -i "/list ra_flags 'managed-config'/d" $DHCP
-sed -i "/list ra_flags 'other-config'/d" $DHCP
-sed -i "/option ndp 'hybrid'/d" $DHCP
+# DHCPv6 服务
+uci -q delete dhcp.lan.dhcpv6
+# RA 服务
+uci -q delete dhcp.lan.ra
+# NDP 代理
+uci -q delete dhcp.lan.ndp
 # 禁用 ipv6 解析
-if ! grep -q "option filter_aaaa" $DHCP; then
-	sed -i "/option allservers/a\	option filter_aaaa '1'" $DHCP
-else
-	sed -i "s|option filter_aaaa .*|option filter_aaaa '1'|g" $DHCP
-fi
+uci set dhcp.@dnsmasq[].filter_aaaa="1"
 
 #========Network========
 # 更改 eth1 为 WAN 口
-sed -i "/list ports 'eth1'/d" $Network
-sed -i "s/option device 'eth.*'/option device 'eth1'/g" $Network
-# 添加 eth2 LAN 口
-sed -i "/list ports 'eth0'/a\	list ports 'eth2'" $Network
-# 删除 UTUN 口
-UTUN=$((`awk "/con.*'utun'/{print NR}" $Network`))  && sed -i "${UTUN},$(($UTUN+3))d" $Network
+uci del_list network.@device[].ports="eth1"
+uci add_list network.@device[].ports="eth2"
+uci set network.wan.device="eth1"
 # 删除 WAN6 口
-WAN6=$((`awk "/con.*'wan6'/{print NR}" $Network`))  && sed -i "${WAN6},$(($WAN6+3))d" $Network
+uci delete network.wan6
+# 设置拨号协议
+uci set network.wan.proto="pppoe"
 
 #========System========
 # echo ledtrig-netdev > /etc/modules.d/led-for-r6s && ln -s /etc/modules.d/led-for-r6s /etc/modules-boot.d/led-for-r6s && modprobe ledtrig-netdev
 # 网口 LED 循序
-# WAN
-wan=$((`awk "/'green:wan'/{print NR}" $System`+3))  && sed -i "${wan},${wan}s/'eth.*'/'pppoe-wan'/g" $System 
-# LAN1
-LAN1=$((`awk "/'green:lan-1'/{print NR}" $System`+3))  &&  sed -i "${LAN1},${LAN1}s/'eth.*'/'eth2'/g" $System
-# LAN2
-LAN2=$((`awk "/'green:lan-2'/{print NR}" $System`+3))  && sed -i "${LAN2},${LAN2}s/'eth.*'/'eth0'/g" $System
+# WAN LED
+uci set system.led_wan.dev="pppoe-wan"
+# LAN1 LED
+uci set system.led_lan1.dev="eth1"
+# LAN2 LED
+uci set system.led_lan2.dev="eth0"
 # 更改网口闪烁方式
-sed -i "s/option mode .*/option mode 'link'/g" $System
-# 关闭系统 led
-if ! grep -q "option name 'SYS_LED'" $System; then
-cat >>$System<<EOF
+uci set system.led_wan.mode="link"
+uci set system.led_lan1.mode="link"
+uci set system.led_lan2.mode="link"
+# 关闭系统 led [red:power & red:sys]
+uci set system.led_sys="led"
+uci set system.led_sys.name="SYS_LED"
+uci set system.led_sys.sysfs="red:power"
+uci set system.led_sys.trigger="none"
+uci set system.led_sys.default="0"
+# 更改名称
+uci set system.@system[].hostname='R6S'
 
-config led
-	# red:power & red:sys
-	option name 'SYS_LED'
-	option sysfs 'red:power'
-	option trigger 'none'
-	option default '0'
-	
-EOF
-fi
+```
