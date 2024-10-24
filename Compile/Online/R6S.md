@@ -54,6 +54,7 @@ uci commit dhcp
 #========Firewall========
 # 默认设置WAN口防火墙打开
 uci set firewall.@zone[1].input='ACCEPT'
+uci commit firewall
 
 #========Network========
 # 更改 eth1 为 WAN 口
