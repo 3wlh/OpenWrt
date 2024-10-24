@@ -79,12 +79,15 @@ uci set system.led_lan2.dev="eth0"
 uci set system.led_wan.mode="link"
 uci set system.led_lan1.mode="link"
 uci set system.led_lan2.mode="link"
-# 关闭系统 led [red:power & red:sys]
-uci set system.led_sys="led"
-uci set system.led_sys.name="SYS"
-uci set system.led_sys.sysfs="$(find "/sys/class/leds/" -type l -name "*red*" | sed "s|.*/||g")"
-uci set system.led_sys.trigger="none"
-uci set system.led_sys.default="0"
+# 关闭系统 SYS_led
+SYS_LED=$(find "/sys/class/leds/" -type l -name "*red*" | sed "s|.*/||g")
+if [ -n "${SYS_LED}" ]; then
+	uci set system.led_sys="led"
+	uci set system.led_sys.name="SYS"
+	uci set system.led_sys.sysfs="${SYS_LED}"
+	uci set system.led_sys.trigger="none"
+	uci set system.led_sys.default="0"
+fi
 # 更改名称
 uci set system.@system[].hostname='R6S'
 uci commit system
