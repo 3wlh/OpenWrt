@@ -11,72 +11,90 @@ libpci pciids pciutils usbutils libusb-1.0-0 usbmuxd libusbmuxd kmod-scsi-core k
 #### 初始化(Shell):
 ```
 #!/bin/bash
-
-#========变量========
-Fstab="/etc/config/fstab"
-ARGON="/etc/config/argon"
-DHCP="/etc/config/dhcp"
-Network="/etc/config/network"
-System="/etc/config/system"
+#========ARGON========
+if [ ! -n "$(uci -q get argon.@global[])" ]; then
+	echo "" > "/etc/config/argon"
+	uci add argon global
+	uci commit argon
+fi
+uci set argon.@global[0].online_wallpaper="none"
+uci set argon.@global[0].mode="normal"
+uci set argon.@global[0].bing_background="0"
+uci set argon.@global[0].transparency_dark="0.2"
+uci set argon.@global[0].dark_primary="#123456"
+uci set argon.@global[0].primary="#123456"
+uci set argon.@global[0].blur_dark="1"
+uci set argon.@global[0].transparency="0.2"
+uci set argon.@global[0].blur="1"
+uci commit argon
 
 #========Fstab========
-# 更改挂挂载选项
-sed -i "s|option anon_swap .*|option anon_swap '0'|g" $Fstab
-sed -i "s|option anon_mount .*|option anon_mount '0'|g" $Fstab
-sed -i "s|option auto_swap .*|option auto_swap '0'|g" $Fstab
-sed -i "s|option auto_mount .*|option auto_mount '1'|g" $Fstab
+# 自动挂载未配置的Swap
+uci set fstab.@global[0].anon_swap="0"
+# 自动挂载未配置的磁盘
+uci set fstab.@global[0].anon_mount="0"
+# 自动挂载交换分区
+uci set fstab.@global[0].auto_swap="0"
+# 自动挂载磁盘
+uci set fstab.@global[0].auto_mount="1"
+uci commit fstab
+
+#========Firewall========
+# 默认设置WAN口防火墙打开
+uci set firewall.@zone[1].input='ACCEPT'
 
 #========Network========
-# 禁用 DHCP 分配
-# sed -i "/option dhcpv4 'server'/a\	option ignore '1'" $Network
-# sed -i "/option ignore '1'/a\	option dynamicdhcp '0'" $Network
-# 添加 网关 和 DNS
-# sed -i "/option ip6assign '60'/a\	option gateway '10.10.10.254'" $Network
-# sed -i "/option gateway '10.10.10.254'/a\	list dns '10.10.10.254'" $Network
-# 以下是旁路由模式
-# 添加 eth1 到LAN 口
-# sed -i "/list ports 'eth.*'/a\	list ports 'eth1'" $Network
-# 删除 WAN 口
-# WAN=$((`awk "/con.*'wan'/{print NR}" $Network`))  && sed -i "${WAN},$(($WAN+3))d" $Network
-
-# 删除 UTUN 口
-UTUN=$((`awk "/con.*'utun'/{print NR}" $Network`))  && sed -i "${UTUN},$(($UTUN+3))d" $Network
+# 更改 eth1 为 WAN 口
+uci del_list network.@device[0].ports="eth0"
+uci add_list network.@device[0].ports="eth1"
+uci set network.wan.device="eth0"
 # 删除 WAN6 口
-WAN6=$((`awk "/con.*'wan6'/{print NR}" $Network`))  && sed -i "${WAN6},$(($WAN6+3))d" $Network
-
+uci -q delete network.wan6
+# 设置拨号协议
+uci set network.wan.proto="pppoe"
+# 旁路设置
+# uci set network.lan.proto='dhcp'
+# 添加 eth0 为 LAN 口
+# uci add_list network.@device[0].ports="eth1"
+# 删除 WAN 口
+# uci -q delete network.wan
+# 添加 网关 和 DNS
+# uci set network.lan.gateway="10.10.10.254"
+# uci add_list network.lan.dns="114.114.114.114"
+uci commit network
 
 #========DHCP========
-# 禁用 ipv6_DHCP
-sed -i "/config dhcp 'lan'/a\	option dynamicdhcp '0'" $DHCP
-sed -i "/option dhcpv6 'hybrid'/d" $DHCP
-sed -i "/option ra 'hybrid'/d" $DHCP
-sed -i "/option ra_slaac '1'/d" $DHCP
-sed -i "/list ra_flags 'managed-config'/d" $DHCP
-sed -i "/list ra_flags 'other-config'/d" $DHCP
-sed -i "/option ndp 'hybrid'/d" $DHCP
-sed -i "/option force '1'/d" $DHCP
+# 禁用 ipv6 DHCP
+# DHCPv6 服务
+uci -q delete dhcp.lan.dhcpv6
+# RA 服务
+uci -q delete dhcp.lan.ra
+# NDP 代理
+uci -q delete dhcp.lan.ndp
+# 禁用 ipv6 解析
+uci set dhcp.@dnsmasq[0].filter_aaaa="1"
+uci commit dhcp
 # 不提供DHCP服务
-sed -i "/option dhcpv4 'server'/a\	option ignore '1'" $DHCP
+# uci set dhcp.lan.ignore="1"
 
 #========System========
-if ! grep -q "option name 'Blue'" $System; then
-cat >>$System<<EOF
-
-config led
-	option name 'Blue'
-	option sysfs 'blue_led'
-	option trigger 'none'
-	option default '0'
-EOF
+# 关闭系统 Blue_led
+Blue_LED=$(find "/sys/class/leds/" -type l -name "*blue*" | sed "s|.*/||g")
+if [ -n "${SYS_LED}" ]; then
+	uci set system.led_blue="led"
+	uci set system.led_blue.name="Blue"
+	uci set system.led_blue.sysfs="${Blue_LED}"
+	uci set system.led_blue.trigger="none"
+	uci set system.led_blue.default="0"
 fi
-if ! grep -q "ooption name 'Green'" $System; then
-cat >>$System<<EOF
-
-config led
-	option name 'Green'
-	option sysfs 'green_led'
-	option trigger 'none'
-	option default '0'
-EOF
+# 关闭系统 Green_led
+Green_LED=$(find "/sys/class/leds/" -type l -name "*green*" | sed "s|.*/||g")
+if [ -n "${SYS_LED}" ]; then
+	uci set system.led_green="led"
+	uci set system.led_green.name="Green"
+	uci set system.led_green.sysfs="${Green_LED}"
+	uci set system.led_green.trigger="none"
+	uci set system.led_green.default="0"
 fi
+uci commit system
 ```
