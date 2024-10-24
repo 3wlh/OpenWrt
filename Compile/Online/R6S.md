@@ -1,20 +1,23 @@
 # NanoPi R6S
 #### 插件(luci-app)：
 ```
--luci-app-gpsysupgrade -luci-proto-wireguard -luci-app-upnp -luci-app-advancedplus -luci-app-wizard luci-app-ttyd luci-app-ramfree luci-app-turboacc luci-app-ddns luci-app-v2ray-server luci-app-eqosplus luci-app-hd-idle luci-app-unishare luci-app-filebrowser-go  luci-app-sunpanel luci-app-alist
+ -luci-app-gpsysupgrade -luci-proto-wireguard -luci-app-upnp -luci-app-advancedplus -luci-app-fileassistant -luci-app-wizard -luci-app-webadmin -luci-app-partexp -luci-app-diskman 
+```
+```
+ luci-app-ramfree luci-app-turboacc luci-app-ddns luci-app-v2ray-server luci-app-vssr luci-app-unishare luci-app-ttyd luci-app-hd-idle luci-app-filebrowser-go luci-app-sunpanel luci-app-alist
 ```
 #### 初始化(Shell):
 ```
 #!/bin/bash
 #========Fstab========
 # 自动挂载未配置的Swap
-uci set fstab.@global[].anon_swap="0"
+uci set fstab.@global[0].anon_swap="0"
 # 自动挂载未配置的磁盘
-uci set fstab.@global[].anon_mount="0"
+uci set fstab.@global[0].anon_mount="0"
 # 自动挂载交换分区
-uci set fstab.@global[].auto_swap="0"
+uci set fstab.@global[0].auto_swap="0"
 # 自动挂载磁盘
-uci set fstab.@global[].auto_mount="1"
+uci set fstab.@global[0].auto_mount="1"
 uci commit fstab
 
 #========ARGON========
@@ -23,15 +26,16 @@ if [ ! -n "$(uci -q get argon.@global[])" ]; then
 	uci add argon global
 	uci commit argon
 fi
-uci set argon.@global[].online_wallpaper="none"
-uci set argon.@global[].mode="normal"
-uci set argon.@global[].bing_background="0"
-uci set argon.@global[].transparency_dark="0.2"
-uci set argon.@global[].dark_primary="#e16496"
-uci set argon.@global[].primary="#e16496"
-uci set argon.@global[].blur_dark="1"
-uci set argon.@global[].transparency="0.2"
-uci set argon.@global[].blur="1"
+
+uci set argon.@global[0].online_wallpaper="none"
+uci set argon.@global[0].mode="normal"
+uci set argon.@global[0].bing_background="0"
+uci set argon.@global[0].transparency_dark="0.2"
+uci set argon.@global[0].dark_primary="#123456"
+uci set argon.@global[0].primary="#123456"
+uci set argon.@global[0].blur_dark="1"
+uci set argon.@global[0].transparency="0.2"
+uci set argon.@global[0].blur="1"
 uci commit argon
 
 
@@ -44,16 +48,20 @@ uci -q delete dhcp.lan.ra
 # NDP 代理
 uci -q delete dhcp.lan.ndp
 # 禁用 ipv6 解析
-uci set dhcp.@dnsmasq[].filter_aaaa="1"
+uci set dhcp.@dnsmasq[0].filter_aaaa="1"
 uci commit dhcp
+
+#========Firewall========
+# 默认设置WAN口防火墙打开
+uci set firewall.@zone[1].input='ACCEPT'
 
 #========Network========
 # 更改 eth1 为 WAN 口
-uci del_list network.@device[].ports="eth1"
-uci add_list network.@device[].ports="eth2"
+uci del_list network.@device[0].ports="eth1"
+uci add_list network.@device[0].ports="eth2"
 uci set network.wan.device="eth1"
 # 删除 WAN6 口
-uci delete network.wan6
+uci -q delete network.wan6
 # 设置拨号协议
 uci set network.wan.proto="pppoe"
 uci commit network
@@ -78,6 +86,6 @@ uci set system.led_sys.sysfs="red:heartbeat"
 uci set system.led_sys.trigger="none"
 uci set system.led_sys.default="0"
 # 更改名称
-# uci set system.@system[].hostname='R6S'
+uci set system.@system[].hostname='R6S'
 uci commit system
 ```
