@@ -82,7 +82,7 @@ uci set system.led_lan2.mode="link"
 # 关闭系统 led [red:power & red:sys]
 uci set system.led_sys="led"
 uci set system.led_sys.name="SYS_LED"
-uci set system.led_sys.sysfs="red:heartbeat"
+uci set system.led_sys.sysfs="$(find "/sys/class/leds/" -type l -name "*red:*" | sed "s|.*/||g")"
 uci set system.led_sys.trigger="none"
 uci set system.led_sys.default="0"
 # 更改名称
