@@ -42,6 +42,7 @@ uci commit fstab
 #========Firewall========
 # 默认设置WAN口防火墙打开
 uci set firewall.@zone[1].input='ACCEPT'
+uci commit firewall
 
 #========Network========
 # 更改 eth1 为 WAN 口
@@ -76,6 +77,7 @@ uci set dhcp.@dnsmasq[0].filter_aaaa="1"
 uci commit dhcp
 # 不提供DHCP服务
 # uci set dhcp.lan.ignore="1"
+uci commit dhcp
 
 #========System========
 # 关闭系统 Blue_led
