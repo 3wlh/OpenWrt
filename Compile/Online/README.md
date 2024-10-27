@@ -18,7 +18,7 @@
 
 #### 网络服务 Docker
 ```
--luci-app-gpsysupgrade -luci-proto-wireguard -luci-app-upnp -luci-app-advancedplus -luci-app-fileassistant -luci-app-wizard -luci-app-webadmin -luci-app-partexp -luci-app-diskman luci-app-v2ray-server luci-app-dockerman luci-app-store luci-app-uhttpd luci-app-unishare luci-app-hd-idle luci-app-filebrowser-go luci-app-cifs-mount
+-luci-app-gpsysupgrade -luci-proto-wireguard -luci-app-upnp -luci-app-advancedplus -luci-app-fileassistant -luci-app-wizard -luci-app-webadmin -luci-app-partexp -luci-app-diskman luci-app-v2ray-server luci-app-dockerman luci-app-store luci-app-uhttpd luci-app-unishare luci-app-hd-idle luci-app-filebrowser-go luci-app-cifs-mount luci-app-uhttpd luci-app-cloudflared
 ```
 ## 初始化（Shell）：
 * [ARM_shell](https://github.com/3wking/3wking/blob/main/OpenWrt/Shell/arm.md)
