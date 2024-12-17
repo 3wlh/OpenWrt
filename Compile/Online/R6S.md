@@ -82,7 +82,7 @@ uci set system.led_lan1.mode="link"
 uci set system.led_lan2.mode="link"
 # 关闭系统 SYS_led
 RED_LED=$(find "/sys/class/leds/" -type l -name "*red*" | sed "s|.*/||g")
-if [ -n "${SYS_LED}" ]; then
+if [ -n "${RED_LED}" ]; then
 	uci set system.led_red="led"
 	uci set system.led_red.name="SYS"
 	uci set system.led_red.sysfs="${RED_LED}"
