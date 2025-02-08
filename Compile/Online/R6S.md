@@ -1,10 +1,10 @@
 # NanoPi R6S
 #### 插件(luci-app)：
 ```
- -luci-app-gpsysupgrade -luci-proto-wireguard -luci-app-upnp -luci-app-advancedplus -luci-app-fileassistant -luci-app-wizard -luci-app-webadmin -luci-app-partexp -luci-app-diskman 
+ -luci-app-gpsysupgrade -luci-proto-wireguard -luci-app-upnp -luci-app-advancedplus -luci-app-filemanager -luci-app-wizard -luci-app-webadmin -luci-app-partexp -luci-app-diskman -luci-app-syscontrol
 ```
 ```
- luci-app-ramfree luci-app-turboacc luci-app-ddns luci-app-v2ray-server luci-app-vssr luci-app-unishare luci-app-ttyd luci-app-hd-idle luci-app-filebrowser filebrowser luci-app-sunpanel luci-app-alist
+ luci-app-ramfree luci-app-turboacc luci-app-v2ray-server luci-app-ttyd luci-app-ddns luci-app-vssr luci-app-unishare luci-app-filebrowser filebrowser luci-app-sunpanel luci-app-alist luci-app-hd-idle
 ```
 #### 初始化(Shell):
 ```
