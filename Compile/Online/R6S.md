@@ -4,7 +4,7 @@
  -luci-app-gpsysupgrade -luci-proto-wireguard -luci-app-upnp -luci-app-advancedplus -luci-app-filemanager -luci-app-wizard -luci-app-webadmin -luci-app-partexp -luci-app-diskman -luci-app-syscontrol
 ```
 ```
- luci-app-ramfree luci-app-turboacc luci-app-v2ray-server luci-app-ttyd luci-app-ddns luci-app-vssr luci-app-unishare luci-app-filebrowser filebrowser luci-app-sunpanel luci-app-alist luci-app-hd-idle
+ luci-app-ramfree luci-app-turboacc luci-app-v2ray-server luci-app-ttyd luci-app-ddns ddns-scripts-dnspod ddns-scripts-cloudflare luci-app-vssr luci-app-unishare luci-app-sunpanel luci-app-alist
 ```
 #### 初始化(Shell):
 ```
@@ -90,6 +90,6 @@ if [ -n "${RED_LED}" ]; then
 	uci set system.led_red.default="0"
 fi
 # 更改名称
-uci set system.@system[].hostname='R6S'
+uci set system.@system[0].hostname='R6S'
 uci commit system
 ```
