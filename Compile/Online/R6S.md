@@ -4,7 +4,7 @@
  -luci-app-gpsysupgrade -luci-proto-wireguard -luci-app-upnp -luci-app-advancedplus -luci-app-filemanager -luci-app-wizard -luci-app-webadmin -luci-app-partexp -luci-app-diskman -luci-app-syscontrol
 ```
 ```
- openssl-util luci-app-ramfree luci-app-turboacc luci-app-v2ray-server luci-app-ttyd luci-app-ddns ddns-scripts-dnspod ddns-scripts-cloudflare luci-app-vssr luci-app-unishare luci-app-sunpanel luci-app-alist
+ libstdcpp6 openssl-util luci-app-ramfree luci-app-turboacc luci-app-v2ray-server luci-app-ttyd luci-app-ddns ddns-scripts-dnspod ddns-scripts-cloudflare luci-app-vssr luci-app-unishare luci-app-sunpanel luci-app-alist
 ```
 #### 初始化(Shell):
 ```
