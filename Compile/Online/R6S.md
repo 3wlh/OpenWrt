@@ -68,6 +68,7 @@ uci set network.wan.device="eth1"
 uci -q delete network.wan6
 # 设置拨号协议
 uci set network.wan.proto="pppoe"
+# 设置拨号账号和密码
 uci set network.wan.username="${PPOE_User}"
 uci set network.wan.password="${PPOE_PWD}"
 uci commit network
