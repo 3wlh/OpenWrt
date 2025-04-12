@@ -9,6 +9,11 @@
 #### 初始化(Shell):
 ```
 #!/bin/bash
+#========变量========
+KEY=$(ip -o link show eth0 | awk '{print $NF}' | tr -d '\n' | md5sum | awk '{print $1}' | cut -c9-24)
+PPOE_User=$(echo "VfJYy92qZbEM8KZAvJN6Pw==" | openssl enc -e -aes-128-cbc -a -K ${KEY} -iv ${KEY} -base64 -d 2>/dev/null)
+PPOE_PWD=$(echo "zHZ4RAG+Q4VPG+8w4NJ5vA==" | openssl enc -e -aes-128-cbc -a -K ${KEY} -iv ${KEY} -base64 -d 2>/dev/null)
+
 #========Fstab========
 # 自动挂载未配置的Swap
 uci set fstab.@global[0].anon_swap="0"
@@ -26,7 +31,6 @@ if [ ! -n "$(uci -q get argon.@global[])" ]; then
 	uci add argon global
 	uci commit argon
 fi
-
 uci set argon.@global[0].online_wallpaper="none"
 uci set argon.@global[0].mode="normal"
 uci set argon.@global[0].bing_background="0"
@@ -37,7 +41,6 @@ uci set argon.@global[0].blur_dark="1"
 uci set argon.@global[0].transparency="0.2"
 uci set argon.@global[0].blur="1"
 uci commit argon
-
 
 #========DHCP========
 # 禁用 ipv6 DHCP
@@ -65,6 +68,8 @@ uci set network.wan.device="eth1"
 uci -q delete network.wan6
 # 设置拨号协议
 uci set network.wan.proto="pppoe"
+uci set network.wan.username="${PPOE_User}"
+uci set network.wan.password="${PPOE_PWD}"
 uci commit network
 
 #========System========
