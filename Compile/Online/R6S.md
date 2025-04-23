@@ -20,6 +20,10 @@ uci set fstab.@global[0].auto_swap="0"
 uci set fstab.@global[0].auto_mount="1"
 uci commit fstab
 
+#========TTYD========
+[[ -f "/etc/config/ttyd" ]] && uci delete ttyd.@ttyd[0].interface
+uci commit ttyd
+
 #========ARGON========
 if [ ! -n "$(uci -q get argon.@global[])" ]; then
 	echo "" > "/etc/config/argon"
@@ -46,7 +50,7 @@ uci -q delete dhcp.lan.ra
 # NDP 代理
 uci -q delete dhcp.lan.ndp
 # 禁用 ipv6 解析
-uci set dhcp.@dnsmasq[0].filter_aaaa="1"
+# uci set dhcp.@dnsmasq[0].filter_aaaa="1"
 uci commit dhcp
 
 #========Firewall========
