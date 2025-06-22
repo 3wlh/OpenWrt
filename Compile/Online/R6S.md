@@ -92,6 +92,9 @@ if [ -n "${RED_LED}" ]; then
 	uci set system.led_red.default="0"
 fi
 # 更改名称
-uci set system.@system[0].hostname='R6S'
+Count=$(cat /tmp/sysinfo/model | grep -o ' ' | wc -l)
+[[ $Count -ge 4 ]] && Model=$(cat /tmp/sysinfo/model | awk '{print $(NF-1), $NF}')
+[[ -z "${Model}" ]] && Model=$(cat /tmp/sysinfo/model | awk '{print $NF}')
+uci set system.@system[0].hostname="${Model}"
 uci commit system
 ```
